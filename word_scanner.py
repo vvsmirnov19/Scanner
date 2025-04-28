@@ -10,13 +10,14 @@ with open('text.md', 'w', encoding='utf-8') as file:
         file.write(paragraph.text+'\n')
 with open('text.md', 'r', encoding='utf-8') as file:
     text = file.readlines()
-tasks = text[2:11] + text[12:41] + text[42:97] + text[98:145] + text[146:165] + text[166:190] + text[191:212] + text[213:242] + text[244:341] + text[342:373] + text[374:406] + text[407:]
+tasks = text[2:41] + text[42:97] + text[98:125] + text[126:145] + text[146:165] + text[166:190] + text[191:212] + text[213:242] + text[244:288] + text[290:310] + text[311:341] + text[342:373] + text[374:406] + text[407:449] + text[451:515] + text[516:536] + text[538:584] + text[585:608] + text[609:622] + text[623:663] + text[665:691] + text[692:760] + text[761:790] + text[791:913]
 answers = text[914:940]
 content = text[942:]
-re_parts = re.compile(r'^\d\.\s([А-Яа-я\s]+)\d+')
-re_headers = re.compile(r'^\d\.\d\.\s([А-Яа-я\s\«\»\,\.]+)\s*\d+')
-re_tasks = re.compile(r'^(\d+\.)*\s*\t*([а-я\d])*\)*\t(.+)')
-re_answer_delimeter = re.compile(r'(\d+\.)*\s*([аaбв\d])[\)|\.]([А-Яа-я\d\s\t\,]+)[\;|\.]\s')
+re_parts = re.compile(r'^(\d\.\s[А-Яа-я\s]+)\d+')
+re_headers = re.compile(r'^(\d\.\d\.\s[А-Яа-я\s\«\»\,\.]+)\s*\d+')
+re_tasks = re.compile(r'^(\d+\.)*\s*\t*([абв\d])*\)*\t*(.+)')
+re_answer_delimeter = re.compile(r'(\d{1,4}\.)(.*?(?=\.))')
+re_answer_delimeter_2 = re.compile(r'[\s\t]([\dабвг])\)[\s\t]*(.*?(?=\;|$))')
 counter = 1
 header_pointer = 0
 content_list = list()
@@ -38,15 +39,15 @@ for line in content:
     counter += 1
 df1 = pd.DataFrame.from_dict(content_list)
 answ_list = list()
-texter = ' '.join(answers)
+texter = ' '.join([answer.rstrip() for answer in answers])
 tans = re.findall(re_answer_delimeter, texter)
-pointer = 1
-for i in tans:
-    if i[0] == '':
-        answ_list.append((f'{pointer}{i[1]}', i[2]))
+for t in tans:
+    ret = re.findall(re_answer_delimeter_2, t[1])
+    if len(ret) != 0:
+        for reti in ret:
+            answ_list.append((f'{t[0]}{reti[0]}', reti[1]))
     else:
-        answ_list.append((f'{i[0]}{i[1]}', i[2]))
-        pointer = i[0]
+        answ_list.append(t)
 task_pointer = None
 task_list = list()
 for line in tasks:
@@ -65,6 +66,7 @@ for task in task_list:
     for answ in answ_list:
         if str(task['id_tasks_book']) == str(answ[0]):
             task['answer'] = answ[1]
+            break
 df2 = pd.DataFrame.from_dict(task_list)
 with pd.ExcelWriter('table.xlsx', engine='xlsxwriter') as writer:
     df2.to_excel(writer, sheet_name='tasks', index=False)
