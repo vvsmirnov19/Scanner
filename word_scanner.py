@@ -17,7 +17,7 @@ re_parts = re.compile(r'^(\d\.\s[А-Яа-я\s]+)\d+')
 re_headers = re.compile(r'^(\d\.\d\.\s[А-Яа-я\s\«\»\,\.]+)\s*\d+')
 re_tasks = re.compile(r'^(\d+\.)*\s*\t*([абв\d])*\)*\t*(.+)')
 re_answer_delimeter = re.compile(r'(\d{1,4}\.)(.*?(?=\.))')
-re_answer_delimeter_2 = re.compile(r'[\s\t]([\dабвг])\)[\s\t]*(.*?(?=\;|$))')
+re_answer_delimeter_2 = re.compile(r'[\s\t]([\dабвгд])\)[\s\t]*(.*?(?=\;|$))')
 counter = 1
 header_pointer = 0
 content_list = list()
