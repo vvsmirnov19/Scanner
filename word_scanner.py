@@ -67,6 +67,53 @@ for task in task_list:
         if str(task['id_tasks_book']) == str(answ[0]):
             task['answer'] = answ[1]
             break
+for i in range(len(task_list)):
+    if i < 39:
+        task_list[i]['paragraph'] = 2
+    elif i < 94:
+        task_list[i]['paragraph'] = 3
+    elif i < 121:
+        task_list[i]['paragraph'] = 4
+    elif i < 142:
+        task_list[i]['paragraph'] = 5
+    elif i < 159:
+        task_list[i]['paragraph'] = 6
+    elif i < 182:
+        task_list[i]['paragraph'] = 7
+    elif i < 233:
+        task_list[i]['paragraph'] = 8
+    elif i < 278:
+        task_list[i]['paragraph'] = 10
+    elif i < 297:
+        task_list[i]['paragraph'] = 11
+    elif i < 327:
+        task_list[i]['paragraph'] = 12
+    elif i < 358:
+        task_list[i]['paragraph'] = 13
+    elif i < 390:
+        task_list[i]['paragraph'] = 14
+    elif i < 432:
+        task_list[i]['paragraph'] = 15
+    elif i < 496:
+        task_list[i]['paragraph'] = 17
+    elif i < 516:
+        task_list[i]['paragraph'] = 18
+    elif i < 562:
+        task_list[i]['paragraph'] = 20
+    elif i < 585:
+        task_list[i]['paragraph'] = 21
+    elif i < 598:
+        task_list[i]['paragraph'] = 22
+    elif i < 638:
+        task_list[i]['paragraph'] = 23
+    elif i < 664:
+        task_list[i]['paragraph'] = 25
+    elif i < 732:
+        task_list[i]['paragraph'] = 26
+    elif i < 761:
+        task_list[i]['paragraph'] = 27
+    else:
+        task_list[i]['paragraph'] = 28
 df2 = pd.DataFrame.from_dict(task_list)
 with pd.ExcelWriter('table.xlsx', engine='xlsxwriter') as writer:
     df2.to_excel(writer, sheet_name='tasks', index=False)

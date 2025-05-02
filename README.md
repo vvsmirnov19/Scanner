@@ -1,5 +1,5 @@
-Для работы content_scanner необходимы pytesseract, Pillow, python-docx, pdf2image
+Для работы word_scanner необходимы docx, openpyxl, pandas
 
-Исходный файл книги не должен содержать кириллицу в названии, в коде он сокращен до 3800.pdf
+Исходный файл текста сохранен как tekstovye_zadachi_po_matematike.docx
 
 Результат работы в файле table.docx
