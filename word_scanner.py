@@ -4,6 +4,8 @@ import docx
 import openpyxl as op
 import pandas as pd
 
+from api import api_request
+
 doc = docx.Document("tekstovye_zadachi_po_matematike.docx")
 with open('text.md', 'w', encoding='utf-8') as file:
     for paragraph in doc.paragraphs:
@@ -64,7 +66,7 @@ for line in tasks:
         task_pointer = task_pointer if match.group(1) is None else match.group(1)
 for task in task_list:
     for answ in answ_list:
-        if str(task['id_tasks_book']) == str(answ[0]):
+        if str(task['id_tasks_book']) == str(answ[0]) and str(task['id_tasks_book']) != '5.':
             task['answer'] = answ[1]
             break
 for i in range(len(task_list)):
@@ -114,6 +116,10 @@ for i in range(len(task_list)):
         task_list[i]['paragraph'] = 27
     else:
         task_list[i]['paragraph'] = 28
+for task in task_list[:10]:
+    print(task)
+    if 'answer' in task:
+        task['solution'] = api_request(task['task'])
 df2 = pd.DataFrame.from_dict(task_list)
 with pd.ExcelWriter('table.xlsx', engine='xlsxwriter') as writer:
     df2.to_excel(writer, sheet_name='tasks', index=False)
